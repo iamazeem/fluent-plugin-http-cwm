@@ -42,24 +42,24 @@ module Fluent
       desc 'The tag for the event.'
       config_param :tag, :string
 
-      desc 'The Redis configuration section for metrics.'
+      desc 'The Redis configuration section for flushing metrics.'
       config_section :redis, required: false, multi: false, init: true, param_name: :redis_config do
-        desc 'The address to bind to.'
+        desc 'The address of Redis server.'
         config_param :host, :string, default: 'localhost'
 
-        desc 'The port to listen to.'
+        desc 'The port of Redis server.'
         config_param :port, :integer, default: 6379
 
         desc 'The grace period for last update.'
         config_param :grace_period, :time, default: '300s'
 
-        desc 'The flush interval for metrics.'
+        desc 'The flush interval to send metrics.'
         config_param :flush_interval, :time, default: '300s'
 
-        desc 'The key prefix for last update entry.'
+        desc 'The prefix for last update key.'
         config_param :last_update_prefix, :string, default: 'deploymentid:last_action'
 
-        desc 'The key prefix for metrics entry.'
+        desc 'The prefix for metrics key.'
         config_param :metrics_prefix, :string, default: 'deploymentid:minio-metrics'
       end
 

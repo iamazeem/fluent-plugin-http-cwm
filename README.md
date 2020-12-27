@@ -53,7 +53,7 @@ The following metrics are aggregated:
 | `bytes_in`          | size of Request header and its Content-Length       |
 | `bytes_out`         | size of Response header and its Content-Length      |
 | `num_requests_in`   | count of APIs [WebUpload, PutObject, DeleteObject]  |
-| `num_requests_out`  | coutn of APIs [WebDownload, GetObject]              |
+| `num_requests_out`  | count of APIs [WebDownload, GetObject]              |
 | `num_requests_misc` | count of APIs other than `in` and `out`             |
 
 ## Installation
@@ -88,17 +88,17 @@ bundle
 
 ### `<redis>` section (optional) (single)
 
-* `host` (string) (optional): The address to bind to.
+* `host` (string) (optional): The address of Redis server.
   * Default value: `localhost`.
-* `port` (integer) (optional): The port to listen to.
+* `port` (integer) (optional): The port of Redis server.
   * Default value: `6379`.
 * `grace_period` (time) (optional): The grace period for last update.
   * Default value: `300s`.
-* `flush_interval` (time) (optional): The flush interval for metrics.
+* `flush_interval` (time) (optional): The flush interval to send metrics.
   * Default value: `300s`.
-* `last_update_prefix` (string) (optional): The key prefix for last update entry.
+* `last_update_prefix` (string) (optional): The prefix for last update key.
   * Default value: `deploymentid:last_action`.
-* `metrics_prefix` (string) (optional): The key prefix for metrics entry.
+* `metrics_prefix` (string) (optional): The prefix for metrics key.
   * Default value: `deploymentid:minio-metrics`.
 
 ### Sample Configuration
