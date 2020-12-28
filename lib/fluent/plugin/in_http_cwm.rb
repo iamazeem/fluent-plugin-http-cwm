@@ -80,7 +80,7 @@ module Fluent
       end
 
       def set_up_redis
-        log.info("Connecting with Redis [#{@redis_config.host}:#{redis_config.port}]")
+        log.info("Connecting with Redis [#{@redis_config.host}:#{@redis_config.port}]")
         @redis = Redis.new(host: @redis_config.host, port: @redis_config.port)
         ready = false
         until ready
@@ -89,7 +89,7 @@ module Fluent
             @redis.ping
             ready = true
           rescue StandardError => e
-            log.error("ERROR: #{e}")
+            log.error("Unable to connect to Redis server! ERROR: '#{e}'. Retrying...")
           end
         end
       end
@@ -153,7 +153,7 @@ module Fluent
             @redis.set(key, curdt.strftime(FMT_DATETIME))
           end
         rescue StandardError => e
-          log.debug("ERROR: #{e}")
+          log.error("Unable to update last action! ERROR: '#{e}'.")
         end
       end
 
@@ -236,7 +236,7 @@ module Fluent
 
           log.debug('Flushing complete!')
         rescue StandardError => e
-          log.debug("ERROR: #{e}")
+          log.error("Unable to flush metrics! ERROR: '#{e}'.")
         end
       end
     end
