@@ -8,12 +8,6 @@ class CwmHttpInputTest < Test::Unit::TestCase
     Fluent::Test.setup
   end
 
-  test 'failure' do
-    flunk
-  end
-
-  private
-
   def create_driver(conf)
     Fluent::Test::Driver::Input.new(Fluent::Plugin::CwmHttpInput).configure(conf)
   end
