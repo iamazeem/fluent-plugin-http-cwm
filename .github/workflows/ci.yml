@@ -24,5 +24,8 @@ jobs:
         gem install bundler
         bundle install --jobs 4 --retry 3
 
+    - name: Rubocop (linting)
+      run: rubocop
+
     - name: Run tests
       run: bundle exec rake
