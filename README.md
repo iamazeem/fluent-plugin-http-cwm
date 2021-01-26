@@ -157,7 +157,7 @@ Example:
 * Commit and push your changes.
 * Make sure to add tests.
 * Run Rubocop locally and fix all the lint warnings.
-* Submit the final the PR.
+* Submit the final PR.
 
 ## Copyright
 
