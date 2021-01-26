@@ -149,6 +149,16 @@ Example:
 </source>
  ```
 
+## Contribute
+
+* Fork the project.
+* Check out the latest `main` branch.
+* Create a feature or bugfix branch from `main`.
+* Commit and push your changes.
+* Make sure to add tests.
+* Run Rubocop locally and fix all the lint warnings.
+* Submit the final the PR.
+
 ## Copyright
 
 * Copyright &copy; 2020 Azeem Sajid
