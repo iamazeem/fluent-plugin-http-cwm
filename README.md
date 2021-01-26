@@ -2,9 +2,11 @@
 
 [![License: Apache-2.0](https://img.shields.io/badge/License-Apache-blue.svg?style=flat-square)](https://github.com/iamAzeem/fluent-plugin-http-cwm/blob/master/LICENSE)
 [![RubyGems Downloads](https://img.shields.io/gem/dt/fluent-plugin-http-cwm?color=blue&style=flat-square&label=Downloads)](https://rubygems.org/gems/fluent-plugin-http-cwm)
+![Lines of code](https://img.shields.io/tokei/lines/github/iamAzeem/fluent-plugin-http-cwm?label=LOC&style=flat-square)
 ![GitHub Workflow Status (branch)](https://img.shields.io/github/workflow/status/iamAzeem/fluent-plugin-http-cwm/ci/main?label=Build&style=flat-square)
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/iamAzeem/fluent-plugin-http-cwm?label=Release&style=flat-square)
 ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/iamAzeem/fluent-plugin-http-cwm?label=Code%20Size&style=flat-square)
+![GitHub repo size](https://img.shields.io/github/repo-size/iamAzeem/fluent-plugin-http-cwm?label=Repo%20Size&style=flat-square)
 
 [Fluentd](https://fluentd.org/) HTTP input plugin for
 [CloudWebManage](https://github.com/CloudWebManage) Logging Component.
