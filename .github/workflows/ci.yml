@@ -12,6 +12,7 @@ on:
 
 jobs:
   run-tests:
+    name: Set up, insatll and run tests
     strategy:
       matrix:
         os: [ubuntu-18.04]
