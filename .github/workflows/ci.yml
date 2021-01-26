@@ -1,4 +1,4 @@
-name: fluent-plugin-http-cwm
+name: ci
 
 on:
   push:
