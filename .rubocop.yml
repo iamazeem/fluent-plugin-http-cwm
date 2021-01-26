@@ -1,7 +1,13 @@
 AllCops:
   NewCops: disable
 
+Gemspec/RequiredRubyVersion:
+  Enabled: false
+
 Metrics/ClassLength:
+  Enabled: false
+
+Metrics/MethodLength:
   Enabled: false
 
 Metrics/AbcSize:
