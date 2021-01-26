@@ -26,8 +26,7 @@ jobs:
 
     - name: Rubocop (linting)
       run: |
-        gem install rubocop
-        rubocop -v
+        gem install rubocop -v 0.8.0
         rubocop
 
     - name: Run tests
