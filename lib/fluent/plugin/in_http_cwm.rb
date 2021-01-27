@@ -63,35 +63,11 @@ module Fluent
         config_param :metrics_prefix, :string, default: 'deploymentid:minio-metrics'
       end
 
-      def default_api_metrics_hash
-        Hash.new do |h, k|
-          h[k] = {
-            'bytes_in' => 0, 'bytes_out' => 0,
-            'num_requests_in' => 0, 'num_requests_out' => 0, 'num_requests_misc' => 0
-          }
-        end
-      end
-
       def initialize
         super
 
         @redis = nil
         @deployment_api_metrics = default_api_metrics_hash
-      end
-
-      def set_up_redis
-        log.info("Connecting with Redis [#{@redis_config.host}:#{@redis_config.port}]")
-        @redis = Redis.new(host: @redis_config.host, port: @redis_config.port)
-        ready = false
-        until ready
-          sleep(1)
-          begin
-            @redis.ping
-            ready = true
-          rescue StandardError => e
-            log.error("Unable to connect to Redis server! ERROR: '#{e}'. Retrying...")
-          end
-        end
       end
 
       def configure(conf)
@@ -112,12 +88,36 @@ module Fluent
         http_server_create_http_server(:http_server, addr: @host, port: @port, logger: log) do |server|
           server.post("/#{tag}") do |req|
             data = parse_data(req.body)
-            if data
-              route(data) if update_deployment_metrics(data)
-            end
+            route(data) if update_deployment_metrics(data)
 
             # return HTTP 200 OK response to MinIO
             [200, { 'Content-Type' => 'text/plain' }, nil]
+          end
+        end
+      end
+
+      private
+
+      def default_api_metrics_hash
+        Hash.new do |h, k|
+          h[k] = {
+            'bytes_in' => 0, 'bytes_out' => 0,
+            'num_requests_in' => 0, 'num_requests_out' => 0, 'num_requests_misc' => 0
+          }
+        end
+      end
+
+      def set_up_redis
+        log.info("Connecting with Redis [#{@redis_config.host}:#{@redis_config.port}]")
+        @redis = Redis.new(host: @redis_config.host, port: @redis_config.port)
+        ready = false
+        until ready
+          sleep(1)
+          begin
+            @redis.ping
+            ready = true
+          rescue StandardError => e
+            log.error("Unable to connect to Redis server! ERROR: '#{e}'. Retrying...")
           end
         end
       end
@@ -164,6 +164,8 @@ module Fluent
       end
 
       def update_deployment_metrics(data)
+        return false unless data
+
         log.debug('Updating deployment metrics')
 
         deploymentid = validate_and_get_value(data, 'deploymentid')
