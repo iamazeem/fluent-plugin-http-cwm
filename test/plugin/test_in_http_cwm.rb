@@ -2,6 +2,7 @@
 
 require 'helper'
 require 'fluent/plugin/in_http_cwm'
+require 'net/http'
 
 class CwmHttpInputTest < Test::Unit::TestCase
   setup do
@@ -47,13 +48,31 @@ class CwmHttpInputTest < Test::Unit::TestCase
   sub_test_case 'route#emit' do
     test 'emit test' do
       driver = create_driver(@default_conf)
-      driver.run(timeout: 0.5)
 
-      driver.events.each do |tag, time, record|
-        assert_equal('test', tag)
-        assert_equal({ 'message' => '{}' }, record)
-        assert(time.is_a?(Fluent::EventTime))
+      res_codes = []
+      lines = 0
+
+      driver.run do
+        File.readlines('./test/logs.txt').each do |line|
+          res = post('/test', line.chomp)
+          res_codes << res.code
+          lines += 1
+        end
       end
+
+      assert_equal lines, res_codes.size
+      assert_equal '200', res_codes[0]
+      assert_equal 1, res_codes.uniq.size
     end
+  end
+
+  private
+
+  def post(path, body)
+    http = Net::HTTP.new('127.0.0.1', 8080)
+    header = { 'Content-Type' => 'application/json' }
+    req = Net::HTTP::Post.new(path, header)
+    req.body = body
+    http.request(req)
   end
 end
