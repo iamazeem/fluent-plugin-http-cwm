@@ -96,6 +96,8 @@ module Fluent
         end
       end
 
+      private
+
       def default_api_metrics_hash
         Hash.new do |h, k|
           h[k] = {
