@@ -2,6 +2,8 @@ name: publish
 
 on:
   push:
+    branches:
+      - main
     tags:
     - 'v*'
 
@@ -18,13 +20,34 @@ jobs:
         ruby-version: 2.6
     - run: bundle install
 
-    - name: Publish to RubyGems
-      run: |
-        mkdir -p $HOME/.gem
-        touch $HOME/.gem/credentials
-        chmod 0600 $HOME/.gem/credentials
-        printf -- "---\n:rubygems_api_key: ${GEM_HOST_API_KEY}\n" > $HOME/.gem/credentials
-        gem build *.gemspec
-        gem push *.gem
+    - name: Build and publish RubyGem
       env:
         GEM_HOST_API_KEY: ${{ secrets.RUBYGEMS_AUTH_TOKEN }}
+      run: |
+        mkdir -p $HOME/.gem && \
+        touch $HOME/.gem/credentials && \
+        chmod 0600 $HOME/.gem/credentials && \
+        printf -- "---\n:rubygems_api_key: ${GEM_HOST_API_KEY}\n" > $HOME/.gem/credentials && \
+        gem build *.gemspec && \
+        gem push *.gem && \
+        echo "Gem published successfully!"
+
+    - name: Update version file on CloudWebManage/cwm-worker-logger
+      env:
+        DEPLOY_KEY: ${{ secrets.CWM_WORKER_LOGGER_DEPLOY_KEY }}
+        DEPLOY_KEY_FILE: cwm_worker_logger_deploy_key
+        GEM_NAME: fluent-plugin-http-cwm
+      run: |
+        echo "$DEPLOY_KEY" > $DEPLOY_KEY_FILE && \
+        chmod 400 $DEPLOY_KEY_FILE && \
+        export GIT_SSH_COMMAND="ssh -i $(pwd)/$DEPLOY_KEY_FILE -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no" && \
+        git clone git@github.com:CloudWebManage/cwm-worker-logger.git && \
+        cd cwm-worker-logger && \
+        git config user.name "$GEM_NAME CI" && \
+        git config user.email "$GEM_NAME-ci@localhost" && \
+        version=$(ruby -e 'puts Gem::Specification::load("fluent-plugin-http-cwm.gemspec").version') && \
+        echo $version > $GEM_NAME.version && \
+        git add $GEM_NAME.version && \
+        git commit -m "Automatic version update for $GEM_NAME gem." && \
+        git push origin master && \
+        echo "Version updated successfully!"
