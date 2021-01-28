@@ -1,17 +1,18 @@
 # fluent-plugin-http-cwm
 
-[![License: Apache-2.0](https://img.shields.io/badge/License-Apache-blue.svg?style=flat-square)](https://github.com/iamAzeem/fluent-plugin-http-cwm/blob/master/LICENSE)
-[![RubyGems Downloads](https://img.shields.io/gem/dt/fluent-plugin-http-cwm?color=blue&style=flat-square&label=Downloads)](https://rubygems.org/gems/fluent-plugin-http-cwm)
+![GitHub Workflow Status (branch)](https://img.shields.io/github/workflow/status/iamAzeem/fluent-plugin-http-cwm/ci/main?color=blue&style=flat-square)
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/iamAzeem/fluent-plugin-http-cwm?style=flat-square)
+[![License: Apache-2.0](https://img.shields.io/badge/license-Apache-blue.svg?style=flat-square)](https://github.com/iamAzeem/fluent-plugin-http-cwm/blob/master/LICENSE)
+[![RubyGems Downloads](https://img.shields.io/gem/dt/fluent-plugin-http-cwm?color=blue&style=flat-square)](https://rubygems.org/gems/fluent-plugin-http-cwm)
+
 ![Lines of code](https://img.shields.io/tokei/lines/github/iamAzeem/fluent-plugin-http-cwm?label=LOC&style=flat-square)
-![GitHub Workflow Status (branch)](https://img.shields.io/github/workflow/status/iamAzeem/fluent-plugin-http-cwm/ci/main?color=blue&label=Build&style=flat-square)
-![GitHub release (latest by date)](https://img.shields.io/github/v/release/iamAzeem/fluent-plugin-http-cwm?label=Release&style=flat-square)
-![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/iamAzeem/fluent-plugin-http-cwm?label=Code%20Size&style=flat-square)
-![GitHub repo size](https://img.shields.io/github/repo-size/iamAzeem/fluent-plugin-http-cwm?label=Repo%20Size&style=flat-square)
+![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/iamAzeem/fluent-plugin-http-cwm?style=flat-square)
+![GitHub repo size](https://img.shields.io/github/repo-size/iamAzeem/fluent-plugin-http-cwm?style=flat-square)
+
+## Overview
 
 [Fluentd](https://fluentd.org/) HTTP input plugin for
 [CloudWebManage](https://github.com/CloudWebManage) Logging Component.
-
-## Overview
 
 This plugin:
 
@@ -28,7 +29,6 @@ This plugin:
             |
             | JSON
             | logs
-            |
             v
   +------------------+
   |     fluentd      |
@@ -53,13 +53,13 @@ This plugin:
 
 The following metrics are aggregated:
 
-| metric              | description                                         |
-|:--------------------|:----------------------------------------------------|
-| `bytes_in`          | size of Request header and its Content-Length       |
-| `bytes_out`         | size of Response header and its Content-Length      |
-| `num_requests_in`   | count of APIs [WebUpload, PutObject, DeleteObject]  |
-| `num_requests_out`  | count of APIs [WebDownload, GetObject]              |
-| `num_requests_misc` | count of APIs other than `in` and `out`             |
+| metric              | description                                        |
+| :------------------ | :------------------------------------------------- |
+| `bytes_in`          | size of Request header and its Content-Length      |
+| `bytes_out`         | size of Response header and its Content-Length     |
+| `num_requests_in`   | count of APIs [WebUpload, PutObject, DeleteObject] |
+| `num_requests_out`  | count of APIs [WebDownload, GetObject]             |
+| `num_requests_misc` | count of APIs other than `in` and `out`            |
 
 ## Installation
 
@@ -74,7 +74,7 @@ gem install fluent-plugin-http-cwm
 Add the following line to your Gemfile:
 
 ```ruby
-gem "fluent-plugin-http-cwm"
+gem 'fluent-plugin-http-cwm'
 ```
 
 And then execute:
@@ -85,26 +85,26 @@ bundle
 
 ## Configuration
 
-* `host` (string) (optional): The address to bind to.
-  * Default value: `localhost`.
-* `port` (integer) (optional): The port to listen to.
-  * Default value: `8080`.
-* `tag` (string) (required): The tag for the event.
+- `host` (string) (optional): The address to bind to.
+  - Default value: `localhost`.
+- `port` (integer) (optional): The port to listen to.
+  - Default value: `8080`.
+- `tag` (string) (required): The tag for the event.
 
 ### `<redis>` section (optional) (single)
 
-* `host` (string) (optional): The address of Redis server.
-  * Default value: `localhost`.
-* `port` (integer) (optional): The port of Redis server.
-  * Default value: `6379`.
-* `grace_period` (time) (optional): The grace period for last update.
-  * Default value: `300s`.
-* `flush_interval` (time) (optional): The flush interval to send metrics.
-  * Default value: `300s`.
-* `last_update_prefix` (string) (optional): The prefix for last update key.
-  * Default value: `deploymentid:last_action`.
-* `metrics_prefix` (string) (optional): The prefix for metrics key.
-  * Default value: `deploymentid:minio-metrics`.
+- `host` (string) (optional): The address of Redis server.
+  - Default value: `localhost`.
+- `port` (integer) (optional): The port of Redis server.
+  - Default value: `6379`.
+- `grace_period` (time) (optional): The grace period for last update.
+  - Default value: `300s`.
+- `flush_interval` (time) (optional): The flush interval to send metrics.
+  - Default value: `300s`.
+- `last_update_prefix` (string) (optional): The prefix for last update key.
+  - Default value: `deploymentid:last_action`.
+- `metrics_prefix` (string) (optional): The prefix for metrics key.
+  - Default value: `deploymentid:minio-metrics`.
 
 ### Sample Configuration
 
@@ -152,20 +152,18 @@ Example:
 
   # ...
 </source>
- ```
+```
 
 ## Contribute
 
-* Fork the project.
-* Check out the latest `main` branch.
-* Create a feature or bugfix branch from `main`.
-* Commit and push your changes.
-* Make sure to add tests.
-* Run Rubocop locally and fix all the lint warnings.
-* Submit the final PR.
+- Fork the project.
+- Check out the latest `main` branch.
+- Create a feature or bugfix branch from `main`.
+- Commit and push your changes.
+- Make sure to add tests.
+- Run Rubocop locally and fix all the lint warnings.
+- Submit the PR.
 
-## Copyright
+## License
 
-* Copyright &copy; 2020 Azeem Sajid
-* License
-  * Apache License, Version 2.0
+[Apache 2.0](./LICENSE)
