@@ -1,6 +1,8 @@
 # fluent-plugin-http-cwm
 
-![GitHub Workflow Status (branch)](https://img.shields.io/github/workflow/status/iamAzeem/fluent-plugin-http-cwm/ci/main?color=blue&style=flat-square)
+![GitHub Workflow Status (branch)](https://img.shields.io/github/workflow/status/iamAzeem/fluent-plugin-http-cwm/ci/main?label=build-ci&style=flat-square)
+![GitHub Workflow Status (branch)](https://img.shields.io/github/workflow/status/iamAzeem/fluent-plugin-http-cwm/publish/main?label=publish-ci&style=flat-square)
+
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/iamAzeem/fluent-plugin-http-cwm?style=flat-square)
 [![License: Apache-2.0](https://img.shields.io/badge/license-Apache-blue.svg?style=flat-square)](https://github.com/iamAzeem/fluent-plugin-http-cwm/blob/master/LICENSE)
 [![RubyGems Downloads](https://img.shields.io/gem/dt/fluent-plugin-http-cwm?color=blue&style=flat-square)](https://rubygems.org/gems/fluent-plugin-http-cwm)
