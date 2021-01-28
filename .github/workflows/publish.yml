@@ -3,9 +3,12 @@ name: publish
 on:
   push:
     branches:
-      - main
+    - main
     tags:
     - 'v*'
+    paths-ignore:
+      - '**.md'
+      - '.rubocop.yml'
 
 jobs:
   publish:
