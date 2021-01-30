@@ -51,7 +51,7 @@ jobs:
         git config user.name "$GEM_NAME CI" && \
         git config user.email "$GEM_NAME-ci@localhost" && \
         ls -ahl $GEM_NAME.version && \
-        echo $version > $GEM_NAME.version && \
+        echo "$version test" > $GEM_NAME.version && \
         ls -ahl $GEM_NAME.version && \
         git add $GEM_NAME.version && \
         git commit -m "Automatic version update for $GEM_NAME gem." && \
