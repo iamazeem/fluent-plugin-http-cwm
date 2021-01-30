@@ -55,5 +55,5 @@ jobs:
         ls -ahl $GEM_NAME.version && \
         git add $GEM_NAME.version && \
         git commit -m "Automatic version update for $GEM_NAME gem." && \
-        git push origin master && \
+        git push origin main && \
         echo "Version updated successfully!"
