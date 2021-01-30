@@ -46,6 +46,7 @@ jobs:
         export GIT_SSH_COMMAND="ssh -i $(pwd)/$DEPLOY_KEY_FILE -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no" && \
         git clone git@github.com:CloudWebManage/cwm-worker-logger.git && \
         cd cwm-worker-logger && \
+        ls -alh && \
         git config user.name "$GEM_NAME CI" && \
         git config user.email "$GEM_NAME-ci@localhost" && \
         version=$(ruby -e 'puts Gem::Specification::load("fluent-plugin-http-cwm.gemspec").version') && \
