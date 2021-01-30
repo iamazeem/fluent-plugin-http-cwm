@@ -12,7 +12,7 @@ on:
 
 jobs:
   run-tests:
-    name: Set up and run tests
+    name: Run tests
     strategy:
       matrix:
         os: [ubuntu-18.04]
@@ -31,11 +31,11 @@ jobs:
 
     - name: Bundle install
       run: |
-        gem install bundler
+        gem install bundler && \
         bundle install --jobs 4 --retry 3
 
     - name: Install Redis
       run: sudo apt install redis-server
 
-    - name: Run tests
+    - name: Tests
       run: bundle exec rake test
