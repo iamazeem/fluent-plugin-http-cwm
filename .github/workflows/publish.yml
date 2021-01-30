@@ -41,16 +41,15 @@ jobs:
         DEPLOY_KEY_FILE: cwm_worker_logger_deploy_key
         GEM_NAME: fluent-plugin-http-cwm
       run: |
+        version=$(ruby -e 'puts Gem::Specification::load("fluent-plugin-http-cwm.gemspec").version') && \
+        echo "Version: " $version && \
         echo "$DEPLOY_KEY" > $DEPLOY_KEY_FILE && \
         chmod 400 $DEPLOY_KEY_FILE && \
         export GIT_SSH_COMMAND="ssh -i $(pwd)/$DEPLOY_KEY_FILE -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no" && \
         git clone git@github.com:CloudWebManage/cwm-worker-logger.git && \
         cd cwm-worker-logger && \
-        ls -alh && \
         git config user.name "$GEM_NAME CI" && \
         git config user.email "$GEM_NAME-ci@localhost" && \
-        version=$(ruby -e 'puts Gem::Specification::load("fluent-plugin-http-cwm.gemspec").version') && \
-        echo "Version: " $version && \
         echo $version > $GEM_NAME.version && \
         git add $GEM_NAME.version && \
         git commit -m "Automatic version update for $GEM_NAME gem." && \
