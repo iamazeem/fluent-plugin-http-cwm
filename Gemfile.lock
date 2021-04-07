@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    fluent-plugin-http-cwm (0.1.0)
+    fluent-plugin-http-cwm (0.2.0)
       fluentd (>= 0.14.10, < 2)
       json (~> 2.3, >= 2.3.0)
       redis (~> 4.2, >= 4.2.5)
