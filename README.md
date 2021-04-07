@@ -98,6 +98,8 @@ bundle
   - Default value: `localhost`.
 - `port` (integer) (optional): The port of Redis server.
   - Default value: `6379`.
+- `db` (integer) (optional): The db to use.
+  - Default value: `0`.
 - `grace_period` (time) (optional): The grace period for last update.
   - Default value: `300s`.
 - `flush_interval` (time) (optional): The flush interval to send metrics.
@@ -125,6 +127,7 @@ bundle
   <redis>
     host                  localhost
     port                  6379
+    db                    0
     grace_period          10s
     flush_interval        10s
     last_update_prefix    deploymentid:last_action

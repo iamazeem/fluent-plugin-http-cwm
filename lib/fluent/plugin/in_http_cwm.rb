@@ -50,6 +50,9 @@ module Fluent
         desc 'The port of Redis server.'
         config_param :port, :integer, default: 6379
 
+        desc 'The db to use.'
+        config_param :db, :integer, default: 0
+
         desc 'The grace period for last update.'
         config_param :grace_period, :time, default: '300s'
 
@@ -108,8 +111,11 @@ module Fluent
       end
 
       def set_up_redis
-        log.info("Connecting with Redis [#{@redis_config.host}:#{@redis_config.port}]")
-        @redis = Redis.new(host: @redis_config.host, port: @redis_config.port)
+        host = @redis_config.host
+        port = @redis_config.port
+        db = @redis_config.db
+        log.info("Connecting with Redis [address: #{host}:#{port}, db: #{db}]")
+        @redis = Redis.new(host: host, port: port, db: db)
         ready = false
         until ready
           sleep(1)
@@ -146,11 +152,25 @@ module Fluent
         curdt = DateTime.now
 
         begin
+          log.debug("checking existing last action entry [key: #{key}]")
           lastval = @redis.get(key)
-          lastdt = DateTime.parse(lastval, FMT_DATETIME) if lastval
-          if lastdt.nil? || days_to_seconds((curdt - lastdt).to_i) >= @redis_config.grace_period
-            log.debug('Setting last action')
-            @redis.set(key, curdt.strftime(FMT_DATETIME))
+
+          is_grace_period_expired = false
+          if lastval
+            lastdt = DateTime.parse(lastval, FMT_DATETIME)
+            dt_diff_secs = days_to_seconds((curdt - lastdt).to_f)
+            if dt_diff_secs > @redis_config.grace_period
+              is_grace_period_expired = true
+              log.debug("grace period [#{@redis_config.grace_period}] expired [#{lastdt} => #{curdt}]")
+            end
+          else
+            log.debug('last action entry not found. going to be set for the first time.')
+          end
+
+          if lastdt.nil? || is_grace_period_expired
+            last_action = curdt.strftime(FMT_DATETIME)
+            @redis.set(key, last_action)
+            log.debug("Updated last action entry [#{key} => #{last_action}]")
           end
         rescue StandardError => e
           log.error("Unable to update last action! ERROR: '#{e}'.")
