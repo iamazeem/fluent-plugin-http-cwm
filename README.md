@@ -164,9 +164,20 @@ Example:
 - Check out the latest `main` branch.
 - Create a feature or bugfix branch from `main`.
 - Commit and push your changes.
-- Make sure to add tests.
+- Make sure to add and run tests locally: `bundle exec rake test`.
 - Run Rubocop locally and fix all the lint warnings.
+- Make sure to update [Gemfile.lock](Gemfile.lock): `sudo bundle update`.
 - Submit the PR.
+
+## Publish the gem
+
+The gem is published via the [publish.yml](.github/workflows/publish.yml)
+Workflow on tagging. The tag must be of the format `v0.3.0`. This workflow
+depends on the successful completion of the [ci.yml](.github/workflows/ci.yml)
+workflow and then it looks for the tag. So, make sure that all the CI issues are
+resolved before creating a new tag. If there are issues while publishing the gem
+i.e. publish workflow doesn't work properly, you can delete and then recreate
+the tag to retrigger this workflow.
 
 ## License
 
