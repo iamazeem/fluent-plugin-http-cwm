@@ -82,7 +82,7 @@ module Fluent
       def start
         super
 
-        # set up timer for flush interval
+        # start interval timer to flush api metrics
         timer_execute(:metrics_flush_timer, @redis_config.flush_interval) do
           flush_api_metrics
         end
@@ -93,7 +93,7 @@ module Fluent
             data = parse_data(req.body)
             route(data) if update_deployment_metrics(data)
 
-            # return HTTP 200 OK response to MinIO
+            # return HTTP 200 OK response with emtpy body
             [200, { 'Content-Type' => 'text/plain' }, nil]
           end
         end
@@ -141,8 +141,9 @@ module Fluent
         router.emit(@tag, time, record)
       end
 
-      def days_to_seconds(days)
-        days * 24 * 60 * 60
+      def datetime_diff_in_secs(dt_begin, dt_end)
+        seconds = ((dt_end - dt_begin) * 24 * 60 * 60)
+        seconds.to_i
       end
 
       def update_deployment_last_action(deploymentid)
@@ -152,19 +153,24 @@ module Fluent
         curdt = DateTime.now
 
         begin
-          log.debug("checking existing last action entry [key: #{key}]")
+          log.debug("Checking existing last action entry [key: #{key}]")
           lastval = @redis.get(key)
 
           is_grace_period_expired = false
           if lastval
             lastdt = DateTime.parse(lastval, FMT_DATETIME)
-            dt_diff_secs = days_to_seconds((curdt - lastdt).to_f)
+            log.debug("Previous Date/Time: #{lastdt}")
+            log.debug("Current  Data/Time: #{curdt}")
+
+            dt_diff_secs = datetime_diff_in_secs(lastdt, curdt)
+            log.debug("Date/Time diff (s): #{dt_diff_secs}")
+
             if dt_diff_secs > @redis_config.grace_period
               is_grace_period_expired = true
-              log.debug("grace period [#{@redis_config.grace_period}] expired [#{lastdt} => #{curdt}]")
+              log.debug("Grace period [#{@redis_config.grace_period}] expired [#{lastdt} => #{curdt}]")
             end
           else
-            log.debug('last action entry not found. going to be set for the first time.')
+            log.debug('Last action entry does not exist. It will be set for the first time.')
           end
 
           if lastdt.nil? || is_grace_period_expired
