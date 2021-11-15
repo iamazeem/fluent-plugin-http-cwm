@@ -10,6 +10,17 @@
 ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/iamAzeem/fluent-plugin-http-cwm?style=flat-square)
 ![GitHub repo size](https://img.shields.io/github/repo-size/iamAzeem/fluent-plugin-http-cwm?style=flat-square)
 
+- [Overview](#overview)
+- [Installation](#installation)
+  - [RubyGems](#rubygems)
+  - [Bundler](#bundler)
+- [Configuration](#configuration)
+  - [`<redis>` section (optional) (single)](#redis-section-optional-single)
+  - [Sample Configuration](#sample-configuration)
+- [Contribute](#contribute)
+- [Publish the gem](#publish-the-gem)
+- [License](#license)
+
 ## Overview
 
 [Fluentd](https://fluentd.org/) HTTP input plugin for
@@ -100,7 +111,7 @@ bundle
   - Default value: `6379`.
 - `db` (integer) (optional): The db to use.
   - Default value: `0`.
-- `grace_period` (time) (optional): The grace period for last update.
+- `grace_period` (time) (optional): The grace period for last action update.
   - Default value: `300s`.
 - `flush_interval` (time) (optional): The flush interval to send metrics.
   - Default value: `300s`.
