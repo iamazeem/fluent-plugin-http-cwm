@@ -67,7 +67,7 @@ class CwmHttpInputTest < Test::Unit::TestCase
       # run and test private methods
       `redis-cli FLUSHALL`
       sleep(redis.grace_period)
-      lines.times do
+      driver.events.each do
         plugin.send(:flush_api_metrics)
         plugin.send(:handle_last_action)
       end
