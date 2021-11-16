@@ -92,7 +92,7 @@ module Fluent
 
         # start interval timer to flush last action entry
         timer_execute(:last_action_flush_timer, '1s') do
-          handle_last_action
+          flush_last_action
         end
 
         log.info("Starting HTTP server [#{@host}:#{@port}]...")
@@ -149,7 +149,7 @@ module Fluent
         router.emit(@tag, time, record)
       end
 
-      def handle_last_action
+      def flush_last_action
         if @last_action_entry.empty?
           @last_action_entry = @last_action_queue.deq.split('|')
           log.debug("Dequed last action entry. #{@last_action_entry}")

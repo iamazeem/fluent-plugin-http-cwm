@@ -15,6 +15,19 @@ class CwmHttpInputTest < Test::Unit::TestCase
                                                      'flush_interval' => '1s'
                                                    })
                                   ])
+
+    @expected_redis_output = {
+      'deploymentid:last_action:docker-compose-http' => '',
+      'deploymentid:last_action:docker-compose-https' => '',
+      'deploymentid:minio-metrics:docker-compose-http:bytes_in' => '61852',
+      'deploymentid:minio-metrics:docker-compose-https:bytes_in' => '14875',
+      'deploymentid:minio-metrics:docker-compose-http:bytes_out' => '112012',
+      'deploymentid:minio-metrics:docker-compose-https:bytes_out' => '2755',
+      'deploymentid:minio-metrics:docker-compose-http:num_requests_out' => '7',
+      'deploymentid:minio-metrics:docker-compose-http:num_requests_in' => '10',
+      'deploymentid:minio-metrics:docker-compose-https:num_requests_in' => '5',
+      'deploymentid:minio-metrics:docker-compose-http:num_requests_misc' => '5'
+    }.freeze
   end
 
   def create_driver(conf)
@@ -64,29 +77,16 @@ class CwmHttpInputTest < Test::Unit::TestCase
       assert_equal '200', res_codes[0]
       assert_equal 1, res_codes.uniq.size
 
-      # run and test private methods
+      # run and test private flushing methods
       `redis-cli FLUSHALL`
       sleep(redis.grace_period)
       driver.events.each do
         plugin.send(:flush_api_metrics)
-        plugin.send(:handle_last_action)
+        plugin.send(:flush_last_action)
       end
 
       # verify from Redis server
-      expected_output = {
-        'deploymentid:last_action:docker-compose-http' => '',
-        'deploymentid:last_action:docker-compose-https' => '',
-        'deploymentid:minio-metrics:docker-compose-http:bytes_in' => '61852',
-        'deploymentid:minio-metrics:docker-compose-https:bytes_in' => '14875',
-        'deploymentid:minio-metrics:docker-compose-http:bytes_out' => '112012',
-        'deploymentid:minio-metrics:docker-compose-https:bytes_out' => '2755',
-        'deploymentid:minio-metrics:docker-compose-http:num_requests_out' => '7',
-        'deploymentid:minio-metrics:docker-compose-http:num_requests_in' => '10',
-        'deploymentid:minio-metrics:docker-compose-https:num_requests_in' => '5',
-        'deploymentid:minio-metrics:docker-compose-http:num_requests_misc' => '5'
-      }.freeze
-
-      expected_output.each do |key, expected_value|
+      @expected_redis_output.each do |key, expected_value|
         if key.include? 'last_action'
           exists = `redis-cli EXISTS #{key}`.chomp
           assert_equal '1', exists
