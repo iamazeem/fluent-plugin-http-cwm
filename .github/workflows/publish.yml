@@ -11,7 +11,7 @@ on:
 
 jobs:
   publish:
-    #if: github.event.workflow_run.conclusion == 'success' && startsWith(github.ref, 'refs/tags/v')
+    if: github.event.workflow_run.conclusion == 'success' && startsWith(github.ref, 'refs/tags/v')
 
     name: Publish Gem
     runs-on: ubuntu-18.04
@@ -33,7 +33,7 @@ jobs:
         chmod 0600 $HOME/.gem/credentials && \
         printf -- "---\n:rubygems_api_key: ${GEM_HOST_API_KEY}\n" > $HOME/.gem/credentials && \
         gem build *.gemspec && \
-        #gem push *.gem && \
+        gem push *.gem && \
         echo "Gem published successfully!"
 
     - name: Update version file on CloudWebManage/cwm-worker-logger
