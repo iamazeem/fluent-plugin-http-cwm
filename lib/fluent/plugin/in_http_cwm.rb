@@ -92,13 +92,7 @@ module Fluent
 
         # start interval timer to flush last action entry
         timer_execute(:last_action_flush_timer, '1s') do
-          if @last_action_entry.empty?
-            @last_action_entry = @last_action_queue.deq.split('|')
-            log.debug("Dequed last action entry. #{@last_action_entry}")
-          else
-            deploymentid, last_action = @last_action_entry
-            @last_action_entry = [] if update_deployment_last_action(deploymentid, last_action)
-          end
+          flush_last_action
         end
 
         log.info("Starting HTTP server [#{@host}:#{@port}]...")
@@ -153,6 +147,16 @@ module Fluent
         time = Fluent::Engine.now
         record = { 'message' => data }
         router.emit(@tag, time, record)
+      end
+
+      def flush_last_action
+        if @last_action_entry.empty?
+          @last_action_entry = @last_action_queue.deq.split('|')
+          log.debug("Dequed last action entry. #{@last_action_entry}")
+        else
+          deploymentid, last_action = @last_action_entry
+          @last_action_entry = [] if update_deployment_last_action(deploymentid, last_action)
+        end
       end
 
       def datetime_diff_in_secs(dt_begin, dt_end)
